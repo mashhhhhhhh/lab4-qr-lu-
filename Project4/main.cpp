@@ -6,7 +6,7 @@
 using namespace std;
 using namespace std::chrono;
 
-// Объявления функций из других файлов
+// ГЋГЎГєГїГўГ«ГҐГ­ГЁГї ГґГіГ­ГЄГ¶ГЁГ© ГЁГ§ Г¤Г°ГіГЈГЁГµ ГґГ Г©Г«Г®Гў
 vector<vector<double>> createMatrix(int N);
 vector<double> createRightHandSide(const vector<vector<double>>& A);
 double vectorNorm(const vector<double>& v);
@@ -29,32 +29,32 @@ int main() {
     cout << "N\tLU Time (ms)\tLU Error\tQR Time (ms)\tQR Error\n";
     
     for (int N : sizes) {
-        // Создаем матрицу и векторы
+        // Г‘Г®Г§Г¤Г ГҐГ¬ Г¬Г ГІГ°ГЁГ¶Гі ГЁ ГўГҐГЄГІГ®Г°Г»
         auto A = createMatrix(N);
         auto x_exact = vector<double>(N, 1.0);
         auto f = createRightHandSide(A);
         
-        // LU решение
+        // LU Г°ГҐГёГҐГ­ГЁГҐ
         auto start_lu = high_resolution_clock::now();
         auto A_lu = A;
         vector<int> pivot;
         luDecomposition(A_lu, pivot);
         auto x_lu = solveLU(A_lu, f, pivot);
         auto end_lu = high_resolution_clock::now();
-        auto lu_time = duration_cast<milliseconds>(end_lu - start_lu).count();
+        auto lu_time = duration<double>(end_lu - start_lu).count();
         long double lu_error = computeError(x_lu, x_exact);
         
-        // QR решение
+        // QR Г°ГҐГёГҐГ­ГЁГҐ
         auto start_qr = high_resolution_clock::now();
         auto A_qr = A;
         vector<vector<double>> Q, R;
         gramSchmidtQR(A_qr, Q, R);
         auto x_qr = solveQR(Q, R, f);
         auto end_qr = high_resolution_clock::now();
-        auto qr_time = duration_cast<milliseconds>(end_qr - start_qr).count();
+        auto qr_time = duration<double>(end_qr - start_qr).count();
         double qr_error = computeError(x_qr, x_exact);
         
-        // Вывод результатов
+        // Г‚Г»ГўГ®Г¤ Г°ГҐГ§ГіГ«ГјГІГ ГІГ®Гў
         cout << N << "\t" << lu_time << "\t" << lu_error << "\t" 
              << qr_time << "\t" << qr_error << "\n";
     }
